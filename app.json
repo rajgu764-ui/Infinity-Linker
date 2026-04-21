@@ -1,15 +1,15 @@
 {
-  "name": "AV-FILE-TO-LINK-PRO",
-  "description": "A Pyrogram Telegram bot to stream Telegram files to web. Updated by @BOT_OWNER26",
+  "name": "Infinity-Linker",
+  "description": "A Pyrogram Telegram bot to stream Telegram files to web. Updated by @ratul1277",
   "keywords": [
     "telegram",
     "stream",
     "web",
     "pyrogram",
     "bot",
-    "av-botz"
+    "infinity-linker-bot"
   ],
-  "repository": "https://github.com/Botsthe/AV-FILE-TO-LINK-PRO.git",
+  "repository": "https://t.me/ratul1277",
   "logo": "https://i.ibb.co/v1YTMm3/icon.png",
   "success_url": "/",
   "env": {
@@ -35,7 +35,7 @@
     },
     "OWNER_USERNAME": {
       "description": "Bot owner's Telegram username (Without @)",
-      "value": "BOT_OWNER26"
+      "value": "ratul1277"
     },
     "ADMINS": {
       "description": "List of admin Telegram user IDs, space separated",
@@ -67,11 +67,11 @@
     },
     "CHANNEL": {
       "description": "Public updates channel URL",
-      "value": "https://t.me/AV_BOTz_UPDATE"
+      "value": "https://t.me/I_LinkerUpdates"
     },
     "SUPPORT": {
       "description": "Support group URL",
-      "value": "https://t.me/AV_SUPPORT_GROUP"
+      "value": "https://t.me/I_LinkerChats"
     },
     "DATABASE_URI": {
       "description": "MongoDB Connection URI",
@@ -79,7 +79,7 @@
     },
     "DATABASE_NAME": {
       "description": "MongoDB Database Name",
-      "value": "avbotz"
+      "value": "infinity-linker-bot"
     },
     "IS_VERIFY": {
       "description": "Enable 1st Verification (True/False)",

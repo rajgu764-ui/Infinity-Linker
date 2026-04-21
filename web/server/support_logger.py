@@ -2,7 +2,7 @@ import logging
 import sys
 import traceback
 
-SUPPORT = "https://t.me/AV_SUPPORT_GROUP"
+SUPPORT = "https://t.me/I_LinkerChats"
 
 # ANSI Colors for Terminal Highlighting
 class Colors:

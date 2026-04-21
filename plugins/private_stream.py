@@ -19,7 +19,7 @@ async def private_receive_handler(c: Client, m: Message):
         user_data = await db.get_block_data(user_id)
         await m.reply(
             f"🚫 **Yᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ғʀᴏᴍ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ.**\n\n"
-            f"🔄 **Cᴏɴᴛᴀᴄᴛ ᴀᴅᴍɪɴ ɪғ ʏᴏᴜ ᴛʜɪɴᴋ ᴛʜɪꜱ ɪꜱ ᴀ ᴍɪꜱᴛᴀᴋᴇ.**\n\n@AV_OWNER_BOT"
+            f"🔄 **Cᴏɴᴛᴀᴄᴛ ᴀᴅᴍɪɴ ɪғ ʏᴏᴜ ᴛʜɪɴᴋ ᴛʜɪꜱ ɪꜱ ᴀ ᴍɪꜱᴛᴀᴋᴇ.**\n\n@ratul1277"
         )
         return
     if not await db.has_premium_access(user_id):
@@ -31,12 +31,12 @@ async def private_receive_handler(c: Client, m: Message):
             )
             return
     file_id = m.document or m.video or m.audio
-    file_name = file_id.file_name if file_id.file_name else f"AV_File_{int(time.time())}.mkv"
+    file_name = file_id.file_name if file_id.file_name else f"Infinity-_File{int(time.time())}.mkv"
     file_size = get_size(file_id.file_size)
     try:
         forwarded = await m.forward(chat_id=BIN_CHANNEL)
         hash_str = get_hash(forwarded)
-        stream = f"{URL}watch/{forwarded.id}/AV_File_{int(time.time())}.mkv?hash={hash_str}"
+        stream = f"{URL}watch/{forwarded.id}/Infinity-File_{int(time.time())}.mkv?hash={hash_str}"
         download = f"{URL}{forwarded.id}?hash={hash_str}"
         file_link = f"https://t.me/{temp.U_NAME}?start=file_{forwarded.id}"
         share_link = f"https://t.me/share/url?url={file_link}"

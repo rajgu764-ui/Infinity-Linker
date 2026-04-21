@@ -40,7 +40,7 @@ async def av_x_verification(client, message):
     verify_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))
     await db.create_verify_id(user_id, verify_id, file_id)
     verify_url = await get_shortlink_av(
-        f"https://telegram.me/{temp.U_NAME}?start=avbotz_{user_id}_{verify_id}", 
+        f"https://telegram.me/{temp.U_NAME}?start=infinity-linker-bot_{user_id}_{verify_id}", 
         is_second_shortener
     )
     buttons = [[

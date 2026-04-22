@@ -36,7 +36,7 @@ async def private_receive_handler(c: Client, m: Message):
     try:
         forwarded = await m.forward(chat_id=BIN_CHANNEL)
         hash_str = get_hash(forwarded)
-        stream = f"{URL}watch/{forwarded.id}/Infinity-File_{int(time.time())}.mkv?hash={hash_str}"
+        stream = f"{URL}watch/{forwarded.id}/InfinityLinkerBOT_{int(time.time())}.mkv?hash={hash_str}"
         download = f"{URL}{forwarded.id}?hash={hash_str}"
         file_link = f"https://t.me/{temp.U_NAME}?start=file_{forwarded.id}"
         share_link = f"https://t.me/share/url?url={file_link}"

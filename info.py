@@ -62,12 +62,12 @@ IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
 
 # Verification Config
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 60)) # In Minutes/Hours based on logic
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'yourdestinationlink.com')
-SHORTLINK_API = environ.get('SHORTLINK_API', 'fe5e689e49f014fbfc697849512a604564006c39')
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'cuty.io')
+SHORTLINK_API = environ.get('SHORTLINK_API', '8OfmDot')
 
 # Second Verification Config
-SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "yourdestinationlink.com")
-SHORTLINK_API2 = environ.get("SHORTENER_API2", "fe5e689e49f014fbfc697849512a604564006c39")
+SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "cuty.io")
+SHORTLINK_API2 = environ.get("SHORTENER_API2", "8OfmDot")
 
 # =========================================================
 # âš™ï¸ SETTINGS & LIMITS

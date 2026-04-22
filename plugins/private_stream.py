@@ -31,7 +31,7 @@ async def private_receive_handler(c: Client, m: Message):
             )
             return
     file_id = m.document or m.video or m.audio
-    file_name = file_id.file_name if file_id.file_name else f"Infinity-_File{int(time.time())}.mkv"
+    file_name = file_id.file_name if file_id.file_name else f"InfinityLinkerBOT{int(time.time())}.mkv"
     file_size = get_size(file_id.file_size)
     try:
         forwarded = await m.forward(chat_id=BIN_CHANNEL)

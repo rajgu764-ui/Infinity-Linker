@@ -62,12 +62,12 @@ IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
 
 # Verification Config
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 60)) # In Minutes/Hours based on logic
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'cuty.io')
-SHORTLINK_API = environ.get('SHORTLINK_API', '8OfmDot')
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'mdiskshortner.link')
+SHORTLINK_API = environ.get('SHORTLINK_API', '52dc53b84036e2b3d10179e70bf4606b4a25ff76')
 
 # Second Verification Config
-SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "cuty.io")
-SHORTLINK_API2 = environ.get("SHORTENER_API2", "8OfmDot")
+SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "mdiskshortner.link")
+SHORTLINK_API2 = environ.get("SHORTENER_API2", "52dc53b84036e2b3d10179e70bf4606b4a25ff76")
 
 # =========================================================
 # âš™ï¸ SETTINGS & LIMITS
@@ -77,7 +77,7 @@ ENABLE_LIMIT = is_enabled(environ.get("ENABLE_LIMIT", "True"), True)
 MAINTENANCE_MODE = is_enabled(environ.get("MAINTENANCE_MODE", "False"), False)
 
 # Time & Rate Limits
-TIMEZONE = environ.get("TIMEZONE", "Asia/Kolkata")
+TIMEZONE = environ.get("TIMEZONE", "Asia/Dhaka")
 PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))
 SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60'))
 RATE_LIMIT_TIMEOUT = int(environ.get("RATE_LIMIT_TIMEOUT", "600"))

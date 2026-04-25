@@ -18,7 +18,7 @@ class script(object):
 
 📅 ᴅᴀᴛᴇ : <code>{}</code>
 ⏰ ᴛɪᴍᴇ : <code>{}</code>
-🌐 ᴛɪᴍᴇᴢᴏɴᴇ : <code>ᴀsɪᴀ/ᴋᴏʟᴋᴀᴛᴀ</code>
+🌐 ᴛɪᴍᴇᴢᴏɴᴇ : <code>ᴀsɪᴀ/Dhaka</code>
 🛠️ ʙᴜɪʟᴅ sᴛᴀᴛᴜs: <code>v4.26.8460 [ sᴛᴀʙʟᴇ ]</code></b>"""
 
     HELP_TXT = """<b>⚙️ <u>ʜᴏᴡ ᴛᴏ ᴜsᴇ ᴍᴇ?</u></b>

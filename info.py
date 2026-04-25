@@ -73,7 +73,7 @@ SHORTLINK_API2 = environ.get("SHORTENER_API2", "fe5e689e49f014fbfc6978495")
 # âš™ï¸ SETTINGS & LIMITS
 # =========================================================
 FSUB = is_enabled(environ.get("FSUB", "True"), True)
-ENABLE_LIMIT = is_enabled(environ.get("ENABLE_LIMIT", "True"), True)
+ENABLE_LIMIT = is_enabled(environ.get("ENABLE_LIMIT", "False"), False)
 MAINTENANCE_MODE = is_enabled(environ.get("MAINTENANCE_MODE", "False"), False)
 
 # Time & Rate Limits
@@ -83,8 +83,8 @@ SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60'))
 RATE_LIMIT_TIMEOUT = int(environ.get("RATE_LIMIT_TIMEOUT", "600"))
 
 # File Limits
-MAX_FILES = int(environ.get("MAX_FILES", "5"))
-BATCH_LIMIT = int(environ.get('BATCH_LIMIT', 60))
+MAX_FILES = int(environ.get("MAX_FILES", "0"))
+BATCH_LIMIT = int(environ.get('BATCH_LIMIT', 0))
 
 # =========================================================
 # ðŸ–¼ï¸ MEDIA & CAPTIONS

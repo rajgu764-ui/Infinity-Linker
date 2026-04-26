@@ -56,9 +56,9 @@ TUTORIAL_LINK_2 = environ.get('TUTORIAL_LINK_2', 'https://t.me/2')
 # =========================================================
 # ðŸ” VERIFICATION & SHORTENER
 # =========================================================
-IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), False)
+IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), True)
 IS_SECOND_VERIFY = is_enabled(environ.get("IS_SECOND_VERIFY", "False"), False)
-IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), False)
+IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
 
 # Verification Config
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 60)) # In Minutes/Hours based on logic
@@ -92,7 +92,7 @@ BATCH_LIMIT = int(environ.get('BATCH_LIMIT', 0))
 QR_CODE = environ.get('QR_CODE', 'https://graph.org/file/6afb4093d5ec5c4176979.jpg')
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://graph.org/file/1669ab9af68eaa62c3ca4.jpg")
 AUTH_PICS = environ.get('AUTH_PICS', 'https://i.ibb.co.com/bjNL5Csj/file-00000000279871fa93dc17179e399163.png')
-PICS = environ.get('PICS', 'https://ibb.co/VpTJNNCN')
+PICS = environ.get('PICS', 'https://i.ibb.co.com/bjNL5Csj/file-00000000279871fa93dc17179e399163.png')
 FILE_PIC = environ.get('FILE_PIC', 'https://i.ibb.co/bj4My0bW/photo-2025-07-21-02-15-21-7529360175656861700.jpg')
 
 FILE_CAPTION = environ.get('FILE_CAPTION', script.CAPTION)

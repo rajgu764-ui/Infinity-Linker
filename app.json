@@ -79,7 +79,7 @@
     },
     "DATABASE_NAME": {
       "description": "MongoDB Database Name",
-      "value": "infinity-linker-bot"
+      "value": "infinity-linker"
     },
     "IS_VERIFY": {
       "description": "Enable 1st Verification (True/False)",

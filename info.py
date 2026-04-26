@@ -83,8 +83,8 @@ SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60'))
 RATE_LIMIT_TIMEOUT = int(environ.get("RATE_LIMIT_TIMEOUT", "600"))
 
 # File Limits
-MAX_FILES = int(environ.get("MAX_FILES", "0"))
-BATCH_LIMIT = int(environ.get('BATCH_LIMIT', 0))
+MAX_FILES = int(environ.get("MAX_FILES", "10"))
+BATCH_LIMIT = int(environ.get('BATCH_LIMIT', 5))
 
 # =========================================================
 # ðŸ–¼ï¸ MEDIA & CAPTIONS

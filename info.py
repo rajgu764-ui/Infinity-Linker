@@ -56,9 +56,9 @@ TUTORIAL_LINK_2 = environ.get('TUTORIAL_LINK_2', 'https://t.me/2')
 # =========================================================
 # ðŸ” VERIFICATION & SHORTENER
 # =========================================================
-IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), True)
-IS_SECOND_VERIFY = is_enabled(environ.get("IS_SECOND_VERIFY", "True"), True)
-IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
+IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), False)
+IS_SECOND_VERIFY = is_enabled(environ.get("IS_SECOND_VERIFY", "False"), False)
+IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), False)
 
 # Verification Config
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 60)) # In Minutes/Hours based on logic
@@ -73,7 +73,7 @@ SHORTLINK_API2 = environ.get("SHORTENER_API2", "fe5e689e49f014fbfc6978495")
 # âš™ï¸ SETTINGS & LIMITS
 # =========================================================
 FSUB = is_enabled(environ.get("FSUB", "True"), True)
-ENABLE_LIMIT = is_enabled(environ.get("ENABLE_LIMIT", "False"), False)
+ENABLE_LIMIT = is_enabled(environ.get("ENABLE_LIMIT", "True"), True)
 MAINTENANCE_MODE = is_enabled(environ.get("MAINTENANCE_MODE", "False"), False)
 
 # Time & Rate Limits

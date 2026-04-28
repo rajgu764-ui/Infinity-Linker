@@ -58,8 +58,8 @@ async def av_x_verification(client, message):
     )
 
     buttons = [[
-        InlineKeyboardButton(text="⚠️ VERIFY ⚠️", url=verify_url), 
-        InlineKeyboardButton(text="❗ HOW TO VERIFY ❗", url=how_to_download_link)
+        InlineKeyboardButton(text="<emoji id='5260480440971570446'></emoji> ᴠᴇʀɪꜰʏ <emoji id='5260480440971570446'></emoji>", url=verify_url), 
+        InlineKeyboardButton(text="<emoji id='5314250708508220914'></emoji> ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ <emoji id='5314250708508220914'></emoji>", url=how_to_download_link)
     ]]
 
     user_name = message.from_user.first_name

@@ -57,11 +57,15 @@ async def av_x_verification(client, message):
         is_second_shortener
     )
 
-    buttons = [[
+    buttons = [
+    [
         InlineKeyboardButton(text="✅ ᴠᴇʀɪꜰʏ ✅", url=verify_url), 
-        InlineKeyboardButton(text="⁉️ ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ ⁉️", url=how_to_download_link),
+        InlineKeyboardButton(text="⁉️ ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ ⁉️", url=how_to_download_link)
+    ],
+    [
         InlineKeyboardButton(text="😁 ʙᴜʏ ꜱᴜʙꜱᴄʀɪᴘᴛɪᴏɴ - ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴠᴇʀɪꜰʏ 😁", callback_data="premium_info")
-    ]]
+    ]
+    ]
 
     user_name = message.from_user.first_name
 

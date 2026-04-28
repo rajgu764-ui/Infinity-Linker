@@ -32,7 +32,7 @@ async def private_receive_handler(c: Client, m: Message):
             )
             return
     if not await db.has_premium_access(user_id):
-        verified = await av_x_verification(client, message)
+        verified = await av_x_verification(c, m)
         if not verified:
           return
 

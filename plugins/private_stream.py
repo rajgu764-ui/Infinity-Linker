@@ -5,6 +5,7 @@ from pyrogram.errors import FloodWait
 from info import URL, BIN_CHANNEL, CHANNEL, FSUB, MAX_FILES
 from database.users_db import db
 from web.utils.file_properties import get_hash
+from plugins.check_verification import av_x_verification
 from utils import temp, get_size
 from plugins.utils import is_user_allowed, is_user_joined
 from Script import script
@@ -30,6 +31,11 @@ async def private_receive_handler(c: Client, m: Message):
                 quote=True
             )
             return
+    if not await db.has_premium_access(user_id):
+        verified = await av_x_verification(client, message)
+        if not verified:
+          return
+
     file_id = m.document or m.video or m.audio
     file_name = file_id.file_name if file_id.file_name else f"InfinityLinkerBOT{int(time.time())}.mkv"
     file_size = get_size(file_id.file_size)

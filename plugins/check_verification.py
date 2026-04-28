@@ -17,37 +17,53 @@ from Script import script
 
 logger = logging.getLogger(__name__)
 
-# --- FOOTER LOGIC ---
 VERIFY_FOOTER = "1/2" if IS_SECOND_VERIFY else "1/1"
 
-# --- MAIN VERIFICATION CHECKER ---
+
+# ✅ FIXED MAIN VERIFICATION
 async def av_x_verification(client, message):
     user_id = message.from_user.id
+
+    # ✅ SAFE COMMAND FIX (IMPORTANT)
+    cmd = message.command or []
+
     if IS_VERIFY:
         user_verified = await db.is_user_verified(user_id)
     else:
         user_verified = True 
+
     if IS_SECOND_VERIFY and user_verified:
         is_second_shortener = await db.use_second_shortener(user_id)
     else:
         is_second_shortener = False 
+
     if user_verified and not is_second_shortener:
         return True
+
     how_to_download_link = TUTORIAL_LINK_2 if is_second_shortener else TUTORIAL_LINK_1
+
     file_id = None
-    if len(message.command) > 1:
-        file_id = message.command[1]
+
+    # ✅ FIXED LINE (NO ERROR)
+    if len(cmd) > 1:
+        file_id = cmd[1]
+
     verify_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))
+
     await db.create_verify_id(user_id, verify_id, file_id)
+
     verify_url = await get_shortlink_av(
         f"https://telegram.me/{temp.U_NAME}?start=infinity-linker-bot_{user_id}_{verify_id}", 
         is_second_shortener
     )
+
     buttons = [[
-        InlineKeyboardButton(text="⚠️ ᴠᴇʀɪғʏ ⚠️", url=verify_url), 
-        InlineKeyboardButton(text="❗ ʜᴏᴡ ᴛᴏ ᴠᴇʀɪғʏ ❗", url=how_to_download_link)
+        InlineKeyboardButton(text="⚠️ VERIFY ⚠️", url=verify_url), 
+        InlineKeyboardButton(text="❗ HOW TO VERIFY ❗", url=how_to_download_link)
     ]]
+
     user_name = message.from_user.first_name
+
     if is_second_shortener:
         try:
             bin_text = script.SECOND_VERIFICATION_TEXT.format(user_name, "2/2")
@@ -59,48 +75,72 @@ async def av_x_verification(client, message):
             bin_text = script.VERIFICATION_TEXT.format(user_name, verify_time, VERIFY_FOOTER)
         except:
             bin_text = script.VERIFICATION_TEXT.format(user_name, verify_time)
+
     dlt = await message.reply_text(
         text=bin_text,
         reply_markup=InlineKeyboardMarkup(buttons),
         parse_mode=enums.ParseMode.HTML
     )
+
     asyncio.create_task(auto_delete_message(message, dlt))
+
     return False
 
-# --- VERIFICATION SUCCESS HANDLER (Run on /start) ---
+
+# ✅ FIXED START VERIFICATION HANDLER
 async def verify_user_on_start(client, message):
     try:
-        data = message.command[1].split("_")       
+        cmd = message.command or []
+
+        if len(cmd) < 2:
+            return False
+
+        data = cmd[1].split("_")
+
         if len(data) < 3:
-            return False           
+            return False
+
         user_id = int(data[1])
         verify_id = data[2]
+
         if message.from_user.id != user_id:
             await message.reply("<b>This link is not for you!</b>")
             return True
+
         verify_id_info = await db.get_verify_id_info(user_id, verify_id)
+
         if not verify_id_info or verify_id_info["verified"]:
-            await message.reply("<b>Lɪɴᴋ Exᴘɪʀᴇᴅ ᴏʀ Aʟʀᴇᴀᴅʏ Usᴇᴅ... Tʀʏ Aɢᴀɪɴ.</b>")
+            await message.reply("<b>Link expired or already used. Try again.</b>")
             return True
+
         is_first_done = await db.is_user_verified(user_id)
+
         if IS_VERIFY and not is_first_done:
             key = "last_verified"
         else:
             key = "second_time_verified"
-        ist_timezone = pytz.timezone(TIMEZONE)     
+
+        ist_timezone = pytz.timezone(TIMEZONE)
         current_time = datetime.now(tz=ist_timezone)
+
         await db.update_notcopy_user(user_id, {key: current_time})
         await db.update_verify_id_info(user_id, verify_id, {"verified": True})
+
         stored_file_id = verify_id_info.get("file_id")
+
         if stored_file_id:
             file_link = f"https://t.me/{temp.U_NAME}?start={stored_file_id}"
         else:
             file_link = f"https://t.me/{temp.U_NAME}?start=help"
+
         btn = InlineKeyboardMarkup([[
-            InlineKeyboardButton("📂 ɢᴇᴛ ʀᴇǫᴜᴇsᴛᴇᴅ ғɪʟᴇ 📂", url=file_link)
+            InlineKeyboardButton("📂 GET FILE 📂", url=file_link)
         ]])
+
         txt = script.SECOND_VERIFY_COMPLETE_TEXT if key == "second_time_verified" else script.VERIFY_COMPLETE_TEXT
+
         vrfy_num = 2 if key == "second_time_verified" else 1
+
         if VERIFIED_LOG:
             try:
                 await client.send_message(
@@ -113,16 +153,17 @@ async def verify_user_on_start(client, message):
                     )
                 )
             except Exception as e:
-                logger.warning(f"Failed to send log: {e}")
+                logger.warning(f"Log error: {e}")
+
         await message.reply_photo(
             photo=VERIFY_IMG, 
             caption=txt.format(message.from_user.mention), 
             reply_markup=btn, 
             parse_mode=enums.ParseMode.HTML
         )
+
         return True
-        
+
     except Exception as e:
         logger.error(f"Verify Error: {e}")
         return False
-            

@@ -3,6 +3,7 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
+
 from info import URL, BIN_CHANNEL, CHANNEL, FSUB, MAX_FILES
 from database.users_db import db
 from web.utils.file_properties import get_hash
@@ -17,35 +18,43 @@ async def private_receive_handler(c: Client, m: Message):
 
     user_id = m.from_user.id
 
-    # ✅ FSUB FIX
+    # ---------------- FSUB FIX ----------------
     if FSUB and not await is_user_joined(c, m):
         await m.reply_text("⚠️ Please join our channel first to use this bot!")
         return
 
-    # ✅ BAN CHECK
+    # ---------------- BAN CHECK ----------------
     if await db.is_user_blocked(user_id):
-        await m.reply_text("🚫 You are banned from using this bot!\nContact admin: @ratul1277")
+        await m.reply_text("🚫 You are banned from using this bot!\nContact admin.")
         return
 
-    # ✅ LIMIT CHECK
+    # ---------------- FILE LIMIT ----------------
     if not await db.has_premium_access(user_id):
         is_allowed, remaining_time = await is_user_allowed(user_id)
+
         if not is_allowed:
             await m.reply_text(
                 f"🚫 You already sent {MAX_FILES} files!\n⏳ Try again after {remaining_time} seconds."
             )
             return
 
-    # ✅ VERIFICATION (only text → file skip)
+    # ---------------- 🔥 VERIFICATION FIX (MAIN) ----------------
     if not await db.has_premium_access(user_id):
-        if m.text:
-            verified = await av_x_verification(c, m)
-            if not verified:
-                return
 
-    # ✅ FILE
+        # ❗ IMPORTANT: NO m.text CHECK (THIS WAS THE BUG)
+        verified = await av_x_verification(c, m)
+
+        # if verification not done → stop
+        if not verified:
+            return
+
+    # ---------------- FILE HANDLING ----------------
     file = m.document or m.video or m.audio
-    file_name = file.file_name if file.file_name else f"Infinity_{int(time.time())}.mkv"
+
+    if not file:
+        return
+
+    file_name = file.file_name if file.file_name else f"File_{int(time.time())}.mkv"
     file_size = get_size(file.file_size)
 
     try:
@@ -57,6 +66,7 @@ async def private_receive_handler(c: Client, m: Message):
         download = f"{URL}{forwarded.id}?hash={hash_str}"
         file_link = f"https://t.me/{temp.U_NAME}?start=file_{forwarded.id}"
 
+        # ---------------- DATABASE SAVE ----------------
         await db.files.insert_one({
             "user_id": user_id,
             "file_name": file_name,
@@ -66,6 +76,7 @@ async def private_receive_handler(c: Client, m: Message):
             "timestamp": time.time()
         })
 
+        # ---------------- LOG ----------------
         await forwarded.reply_text(
             f"👤 User: [{m.from_user.first_name}](tg://user?id={user_id})\n"
             f"🆔 ID: {user_id}\n"
@@ -73,6 +84,7 @@ async def private_receive_handler(c: Client, m: Message):
             disable_web_page_preview=True
         )
 
+        # ---------------- MAIN MESSAGE ----------------
         await m.reply_text(
             script.CAPTION_TXT.format(CHANNEL, file_name, file_size, stream, download),
             disable_web_page_preview=True,

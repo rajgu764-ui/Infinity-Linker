@@ -61,7 +61,7 @@ IS_SECOND_VERIFY = is_enabled(environ.get("IS_SECOND_VERIFY", "False"), False)
 IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
 
 # Verification Config
-VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 60)) # In Minutes/Hours based on logic
+VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 1)) # In Minutes/Hours based on logic
 SHORTLINK_URL = environ.get('SHORTLINK_URL', 'cuty.io')
 SHORTLINK_API = environ.get('SHORTLINK_API', 'fe5e689e49f014fbfc6978495')
 

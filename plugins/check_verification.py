@@ -63,7 +63,7 @@ async def av_x_verification(client, message):
         InlineKeyboardButton(text="⁉️ ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ ⁉️", url=how_to_download_link)
     ],
     [
-        InlineKeyboardButton(text="😁 ʙᴜʏ ꜱᴜʙꜱᴄʀɪᴘᴛɪᴏɴ - ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴠᴇʀɪꜰʏ 😁", callback_data="/plan")
+        InlineKeyboardButton(text="😁 ʙᴜʏ ꜱᴜʙꜱᴄʀɪᴘᴛɪᴏɴ - ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴠᴇʀɪꜰʏ 😁", callback_data="plan")
     ]
     ]
 

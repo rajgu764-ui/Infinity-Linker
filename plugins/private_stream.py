@@ -90,15 +90,15 @@ async def private_receive_handler(c: Client, m: Message):
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([
                 [
-                    InlineKeyboardButton("• STREAM •", url=stream),
-                    InlineKeyboardButton("• DOWNLOAD •", url=download)
+                    InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
+                    InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)
                 ],
                 [
-                    InlineKeyboardButton("• GET FILE •", url=file_link),
-                    InlineKeyboardButton("• DELETE •", callback_data=f"deletefile_{forwarded.id}")
+                    InlineKeyboardButton("• ɢᴇᴛ ғɪʟᴇ •", url=file_link),
+                    InlineKeyboardButton("• ᴅᴇʟᴇᴛᴇ ғɪʟᴇ •", callback_data=f"deletefile_{forwarded.id}")
                 ],
                 [
-                    InlineKeyboardButton("• CLOSE •", callback_data="close_data")
+                    InlineKeyboardButton("• ᴄʟᴏꜱᴇ •", callback_data="close_data")
                 ]
             ])
         )

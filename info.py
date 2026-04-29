@@ -56,14 +56,14 @@ TUTORIAL_LINK_2 = environ.get('TUTORIAL_LINK_2', 'https://t.me/2')
 # =========================================================
 # ðŸ” VERIFICATION & SHORTENER
 # =========================================================
-IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), False)
-IS_SECOND_VERIFY = is_enabled(environ.get("IS_SECOND_VERIFY", "False"), False)
+IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), True)
+IS_SECOND_VERIFY = is_enabled(environ.get("IS_SECOND_VERIFY", "True"), True)
 IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
 
 # Verification Config
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 1)) # In Minutes/Hours based on logic
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'cuty.io')
-SHORTLINK_API = environ.get('SHORTLINK_API', 'fe5e689e49f014fbfc6978495')
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'cuty.io_-&_23$$')
+SHORTLINK_API = environ.get('SHORTLINK_API', 'fe5e689e49f014fbfc6978495_-4233:$2#')
 
 # Second Verification Config
 SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "cuty.io")

@@ -4,7 +4,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
 
-from info import URL, BIN_CHANNEL, CHANNEL, FSUB, MAX_FILES, IS_VERIFY, IS_SECOND_VERIFY
+from info import URL, BIN_CHANNEL, CHANNEL, FSUB, MAX_FILES
 from database.users_db import db
 from web.utils.file_properties import get_hash
 from plugins.check_verification import av_x_verification
@@ -12,18 +12,20 @@ from utils import temp, get_size
 from plugins.utils import is_user_allowed, is_user_joined
 from Script import script
 
+
 @Client.on_message(filters.private & (filters.document | filters.video | filters.audio), group=4)
 async def private_receive_handler(c: Client, m: Message):
+
     user_id = m.from_user.id
 
     # ---------------- FSUB FIX ----------------
     if FSUB and not await is_user_joined(c, m):
-        await m.reply_text("⚠️ Please join our channel first to use this bot!")
+        await m.reply_text("âš ï¸ Please join our channel first to use this bot!")
         return
 
     # ---------------- BAN CHECK ----------------
     if await db.is_user_blocked(user_id):
-        await m.reply_text("🚫 You are banned from using this bot!\nContact admin.")
+        await m.reply_text("ðŸš« You are banned from using this bot!\nContact admin.")
         return
 
     # ---------------- FILE LIMIT ----------------
@@ -32,19 +34,19 @@ async def private_receive_handler(c: Client, m: Message):
 
         if not is_allowed:
             await m.reply_text(
-                f"🚫 You already sent {MAX_FILES} files!\n⏳ Try again after {remaining_time} seconds."
+                f"ðŸš« You already sent {MAX_FILES} files!\nâ³ Try again after {remaining_time} seconds."
             )
             return
 
-    # ---------------- 🔥 VERIFICATION (TWO FLAGS) ----------------
+    # ---------------- ðŸ”¥ VERIFICATION FIX (MAIN) ----------------
     if not await db.has_premium_access(user_id):
-        if IS_VERIFY:                     # পুরো ভেরিফিকেশন সিস্টেম চালু থাকলে
-            if IS_SECOND_VERIFY:          # সেকেন্ড ভেরিফিকেশন চালু থাকলেই av_x_verification কল হবে
-                verified = await av_x_verification(c, m)
-                if not verified:
-                    return
-            # এখানে প্রয়োজনে প্রথম ভেরিফিকেশন যুক্ত করতে পারেন
-        # IS_VERIFY = False হলে কোনো ভেরিফিকেশনই হবে না
+
+        # â— IMPORTANT: NO m.text CHECK (THIS WAS THE BUG)
+        verified = await av_x_verification(c, m)
+
+        # if verification not done â†’ stop
+        if not verified:
+            return
 
     # ---------------- FILE HANDLING ----------------
     file = m.document or m.video or m.audio
@@ -76,9 +78,9 @@ async def private_receive_handler(c: Client, m: Message):
 
         # ---------------- LOG ----------------
         await forwarded.reply_text(
-            f"👤 User: [{m.from_user.first_name}](tg://user?id={user_id})\n"
-            f"🆔 ID: {user_id}\n"
-            f"🔗 Stream: {stream}",
+            f"ðŸ‘¤ User: [{m.from_user.first_name}](tg://user?id={user_id})\n"
+            f"ðŸ†” ID: {user_id}\n"
+            f"ðŸ”— Stream: {stream}",
             disable_web_page_preview=True
         )
 
@@ -88,19 +90,19 @@ async def private_receive_handler(c: Client, m: Message):
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([
                 [
-                    InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
-                    InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)
+                    InlineKeyboardButton("â€¢ STREAM â€¢", url=stream),
+                    InlineKeyboardButton("â€¢ DOWNLOAD â€¢", url=download)
                 ],
                 [
-                    InlineKeyboardButton("• ɢᴇᴛ ғɪʟᴇ •", url=file_link),
-                    InlineKeyboardButton("• ᴅᴇʟᴇᴛᴇ ғɪʟᴇ •", callback_data=f"deletefile_{forwarded.id}")
+                    InlineKeyboardButton("â€¢ GET FILE â€¢", url=file_link),
+                    InlineKeyboardButton("â€¢ DELETE â€¢", callback_data=f"deletefile_{forwarded.id}")
                 ],
                 [
-                    InlineKeyboardButton("• ᴄʟᴏꜱᴇ •", callback_data="close_data")
+                    InlineKeyboardButton("â€¢ CLOSE â€¢", callback_data="close_data")
                 ]
             ])
         )
 
     except FloodWait as e:
         await asyncio.sleep(e.value)
-        await c.send_message(BIN_CHANNEL, f"⚠️ FloodWait: {e.value}s")
+        await c.send_message(BIN_CHANNEL, f"âš ï¸ FloodWait: {e.value}s")

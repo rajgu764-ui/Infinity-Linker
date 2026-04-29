@@ -14,95 +14,92 @@ from Script import script
 
 @Client.on_message(filters.private & (filters.document | filters.video | filters.audio), group=4)
 async def private_receive_handler(c: Client, m: Message):
+    user_id = m.from_user.id
 
-user_id = m.from_user.id  
+    # ---------------- FSUB FIX ----------------
+    if FSUB and not await is_user_joined(c, m):
+        await m.reply_text("⚠️ Please join our channel first to use this bot!")
+        return
 
-# ---------------- FSUB FIX ----------------  
-if FSUB and not await is_user_joined(c, m):  
-    await m.reply_text("⚠️ Please join our channel first to use this bot!")  
-    return  
+    # ---------------- BAN CHECK ----------------
+    if await db.is_user_blocked(user_id):
+        await m.reply_text("🚫 You are banned from using this bot!\nContact admin.")
+        return
 
-# ---------------- BAN CHECK ----------------  
-if await db.is_user_blocked(user_id):  
-    await m.reply_text("🚫 You are banned from using this bot!\nContact admin.")  
-    return  
+    # ---------------- FILE LIMIT ----------------
+    if not await db.has_premium_access(user_id):
+        is_allowed, remaining_time = await is_user_allowed(user_id)
 
-# ---------------- FILE LIMIT ----------------  
-if not await db.has_premium_access(user_id):  
-    is_allowed, remaining_time = await is_user_allowed(user_id)  
+        if not is_allowed:
+            await m.reply_text(
+                f"🚫 You already sent {MAX_FILES} files!\n⏳ Try again after {remaining_time} seconds."
+            )
+            return
 
-    if not is_allowed:  
-        await m.reply_text(  
-            f"🚫 You already sent {MAX_FILES} files!\n⏳ Try again after {remaining_time} seconds."  
-        )  
-        return  
+    # ---------------- 🔥 VERIFICATION FIX (MAIN) ----------------
+    if not await db.has_premium_access(user_id):
+        # ❗ IMPORTANT: NO m.text CHECK (THIS WAS THE BUG)
+        verified = await av_x_verification(c, m)
 
-# ---------------- 🔥 VERIFICATION FIX (MAIN) ----------------  
-if not await db.has_premium_access(user_id):  
+        # if verification not done → stop
+        if not verified:
+            return
 
-    # ❗ IMPORTANT: NO m.text CHECK (THIS WAS THE BUG)  
-    verified = await av_x_verification(c, m)  
+    # ---------------- FILE HANDLING ----------------
+    file = m.document or m.video or m.audio
 
-    # if verification not done → stop  
-    if not verified:  
-        return  
+    if not file:
+        return
 
-# ---------------- FILE HANDLING ----------------  
-file = m.document or m.video or m.audio  
+    file_name = file.file_name if file.file_name else f"File_{int(time.time())}.mkv"
+    file_size = get_size(file.file_size)
 
-if not file:  
-    return  
+    try:
+        forwarded = await m.forward(chat_id=BIN_CHANNEL)
 
-file_name = file.file_name if file.file_name else f"File_{int(time.time())}.mkv"  
-file_size = get_size(file.file_size)  
+        hash_str = get_hash(forwarded)
 
-try:  
-    forwarded = await m.forward(chat_id=BIN_CHANNEL)  
+        stream = f"{URL}watch/{forwarded.id}/{file_name}?hash={hash_str}"
+        download = f"{URL}{forwarded.id}?hash={hash_str}"
+        file_link = f"https://t.me/{temp.U_NAME}?start=file_{forwarded.id}"
 
-    hash_str = get_hash(forwarded)  
+        # ---------------- DATABASE SAVE ----------------
+        await db.files.insert_one({
+            "user_id": user_id,
+            "file_name": file_name,
+            "file_size": file_size,
+            "file_id": forwarded.id,
+            "hash": hash_str,
+            "timestamp": time.time()
+        })
 
-    stream = f"{URL}watch/{forwarded.id}/{file_name}?hash={hash_str}"  
-    download = f"{URL}{forwarded.id}?hash={hash_str}"  
-    file_link = f"https://t.me/{temp.U_NAME}?start=file_{forwarded.id}"  
+        # ---------------- LOG ----------------
+        await forwarded.reply_text(
+            f"👤 User: [{m.from_user.first_name}](tg://user?id={user_id})\n"
+            f"🆔 ID: {user_id}\n"
+            f"🔗 Stream: {stream}",
+            disable_web_page_preview=True
+        )
 
-    # ---------------- DATABASE SAVE ----------------  
-    await db.files.insert_one({  
-        "user_id": user_id,  
-        "file_name": file_name,  
-        "file_size": file_size,  
-        "file_id": forwarded.id,  
-        "hash": hash_str,  
-        "timestamp": time.time()  
-    })  
+        # ---------------- MAIN MESSAGE ----------------
+        await m.reply_text(
+            script.CAPTION_TXT.format(CHANNEL, file_name, file_size, stream, download),
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([
+                [
+                    InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
+                    InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)
+                ],
+                [
+                    InlineKeyboardButton("• ɢᴇᴛ ғɪʟᴇ •", url=file_link),
+                    InlineKeyboardButton("• ᴅᴇʟᴇᴛᴇ ғɪʟᴇ •", callback_data=f"deletefile_{forwarded.id}")
+                ],
+                [
+                    InlineKeyboardButton("• ᴄʟᴏꜱᴇ •", callback_data="close_data")
+                ]
+            ])
+        )
 
-    # ---------------- LOG ----------------  
-    await forwarded.reply_text(  
-        f"👤 User: [{m.from_user.first_name}](tg://user?id={user_id})\n"  
-        f"🆔 ID: {user_id}\n"  
-        f"🔗 Stream: {stream}",  
-        disable_web_page_preview=True  
-    )  
-
-    # ---------------- MAIN MESSAGE ----------------  
-    await m.reply_text(  
-        script.CAPTION_TXT.format(CHANNEL, file_name, file_size, stream, download),  
-        disable_web_page_preview=True,  
-        reply_markup=InlineKeyboardMarkup([  
-            [  
-                InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),  
-                InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)  
-            ],  
-            [  
-                InlineKeyboardButton("• ɢᴇᴛ ғɪʟᴇ •", url=file_link),  
-                InlineKeyboardButton("• ᴅᴇʟᴇᴛᴇ ғɪʟᴇ •", callback_data=f"deletefile_{forwarded.id}")  
-            ],  
-            [  
-                InlineKeyboardButton("• ᴄʟᴏꜱᴇ •", callback_data="close_data")  
-            ]  
-        ])  
-    )  
-
-except FloodWait as e:  
-    await asyncio.sleep(e.value)  
-    await c.send_message(BIN_CHANNEL, f"⚠️ FloodWait: {e.value}s")
-    
+    except FloodWait as e:
+        await asyncio.sleep(e.value)
+        await c.send_message(BIN_CHANNEL, f"⚠️ FloodWait: {e.value}s")

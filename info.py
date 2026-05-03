@@ -66,8 +66,8 @@ SHORTLINK_URL = environ.get('SHORTLINK_URL', 'cuty.io')
 SHORTLINK_API = environ.get('SHORTLINK_API', 'fe5e689e49f014fbfc6978495')
 
 # Second Verification Config
-SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "cuty.io")
-SHORTLINK_API2 = environ.get("SHORTENER_API2", "fe5e689e49f014fbfc6978495")
+SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "gplinks.com")
+SHORTLINK_API2 = environ.get("SHORTENER_API2", "3cd0d6f8f5abfdb64341f77a88d3fb6b1f6851b7")
 
 # =========================================================
 # âš™ï¸ SETTINGS & LIMITS
